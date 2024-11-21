@@ -8,7 +8,7 @@ collections:
   # - name: containers.podman
   # Commented out until CI/CD can get fixed
   # - name: ansible.controller
-  - name: awx.awx
+  # - name: awx.awx
   # Commented out due to internal private hub bug
   # - name: infra.eda_configuration
 ...
