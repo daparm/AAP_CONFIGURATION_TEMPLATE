@@ -1,0 +1,57 @@
+---
+- name: Playbook to configure ansible controller post installation
+  hosts: all
+  vars_files:
+    - ../vaults/{{ env }}.yml
+  connection: local
+  tasks:
+    # probably not good but kinda works, looking for better solutions,
+    # you are better off removing this block and getting token into vault by hand
+    - name: Figuring out AH token
+      when: ah_token is not defined or ah_token['token'] is defined
+      block:
+
+        - name: Include collection gateway_users
+          ansible.builtin.include_role:
+            name: infra.aap_configuration.gateway_users
+
+        - name: Authenticate and get an API token from Automation Hub
+          infra.ah_configuration.ah_token:
+            ah_hostname: "{{ aap_hostname | default(groups['automationhub'][0]) }}"
+            ah_username: "{{ ah_token_username | default('admin') }}"
+            ah_password: "{{ ah_token_password }}"
+            ah_path_prefix: galaxy # this is for private automation hub
+            validate_certs: false
+          register: r_ah_token
+
+        - name: Fixing format
+          ansible.builtin.set_fact:
+            ah_token: "{{ ah_token['token'] }}"
+          when: r_ah_token['changed'] # noqa: no-handler
+
+    - name: Figuring out AAP token
+      when: aap_token is not defined or aap_token['ansible_facts']['controller_token']['token'] is defined
+      block:
+
+        - name: Include collection gateway_users
+          ansible.builtin.include_role:
+            name: infra.aap_configuration.gateway_users
+
+        - name: Authenticate and get an API token from Controller
+          ansible.controller.token:
+            controller_host: "{{ aap_hostname | default(groups['controller'][0]) }}"
+            controller_username: "{{ aap_token_username | default('admin') }}"
+            controller_password: "{{ controller_api_user_pass }}"
+            scope: "{{ controller_token_scope | default('write') }}"
+            validate_certs: false
+          register: r_aap_token
+
+        - name: Fixing format
+          ansible.builtin.set_fact:
+            fmt_aap_token: "{{ r_aap_token['ansible_facts']['controller_token']['token'] }}"
+          when: r_aap_token['changed'] # noqa: no-handler
+
+    - name: Call dispatch role
+      ansible.builtin.include_role:
+        name: infra.aap_configuration.dispatch
+...

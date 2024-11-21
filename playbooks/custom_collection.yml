@@ -1,0 +1,16 @@
+---
+- name: Publish custom collection
+  hosts: all
+  connection: local
+  gather_facts: false
+  vars_files:
+    - ../vaults/{{ env }}.yml
+  tasks:
+    - name: Include namespace role
+      ansible.builtin.include_role:
+        name: infra.aap_configuration.hub_namespace
+
+    - name: Include publish role
+      ansible.builtin.include_role:
+        name: infra.aap_configuration.hub_publish
+...

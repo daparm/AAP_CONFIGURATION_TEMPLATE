@@ -1,0 +1,7 @@
+---
+ah_auto_approve: true
+hub_collections:
+  - name: test
+    path: ../collections/community_test-test-1.0.1.tar.gz
+    namespace: community_test
+...

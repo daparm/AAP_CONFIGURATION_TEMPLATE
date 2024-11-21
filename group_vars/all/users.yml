@@ -1,0 +1,13 @@
+---
+ah_token_username: token_user
+aap_token_username: api_user
+aap_user_accounts_all:
+  - username: "{{ aap_token_username }}"
+    is_superuser: false
+    password: "{{ controller_api_user_pass }}"
+  - username: "{{ ah_token_username }}"
+    append: true
+    is_superuser: true
+    password: "{{ ah_token_password }}"
+    state: present
+...

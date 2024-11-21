@@ -1,0 +1,42 @@
+---
+# This token is used to synchronise certifified and validated collections from
+# console.redhat.com.
+# To generate an AH token, go to the url:
+# https://console.redhat.com/ansible/automation-hub/token and click on
+# "Load Token" in the "Offline token" chapter.
+cloud_token: 'eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0NzQzYTkzMC03YmJiLTRkZGQtOTgzMS00ODcxNGRlZDc0YjUifQ.eyJpYXQiOjE3MzIyMTU2MTIsImp0aSI6ImQ4MDkyMzFjLWMyYWMtNGQ1NS05MDRmLTRkZDNjNGFmNzcxNyIsImlzcyI6Imh0dHBzOi8vc3NvLnJlZGhhdC5jb20vYXV0aC9yZWFsbXMvcmVkaGF0LWV4dGVybmFsIiwiYXVkIjoiaHR0cHM6Ly9zc28ucmVkaGF0LmNvbS9hdXRoL3JlYWxtcy9yZWRoYXQtZXh0ZXJuYWwiLCJzdWIiOiJmOjUyOGQ3NmZmLWY3MDgtNDNlZC04Y2Q1LWZlMTZmNGZlMGNlNjpkYXBhciIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJjbG91ZC1zZXJ2aWNlcyIsIm5vbmNlIjoiZjU1NGIzMzEtM2Q2Mi00MzU3LWJkN2UtMTdiYjI1YTIwOTkwIiwic2lkIjoiZDFiMWMyMWEtMDBhMS00MjgyLWE2NGItNWFjM2NkOTVmZDQwIiwic2NvcGUiOiJvcGVuaWQgYmFzaWMgYXBpLmlhbS5zZXJ2aWNlX2FjY291bnRzIHJvbGVzIHdlYi1vcmlnaW5zIGNsaWVudF90eXBlLnByZV9rYzI1IG9mZmxpbmVfYWNjZXNzIn0.bwN8zC9usKqzIiE_lciPWGWNNs9_sDdzAoxCvL67wrZ6TTEY8aFjwkyckfwYgTarWr9c_i_2I4d0TW-DrJQ9Lw'
+
+# This token use Red Hat's API to download AAP
+# Generate this token here: https://access.redhat.com/management/api
+# Keep in mind that the token will expire if it is not used for 30 days.
+offline_token: 'eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI0NzQzYTkzMC03YmJiLTRkZGQtOTgzMS00ODcxNGRlZDc0YjUifQ.eyJpYXQiOjE3MzIyMTU1NzEsImp0aSI6IjAwNWZhYTQyLTNmYWItNGY2My04NTdhLWU3MDI4NTE2Y2ZjOSIsImlzcyI6Imh0dHBzOi8vc3NvLnJlZGhhdC5jb20vYXV0aC9yZWFsbXMvcmVkaGF0LWV4dGVybmFsIiwiYXVkIjoiaHR0cHM6Ly9zc28ucmVkaGF0LmNvbS9hdXRoL3JlYWxtcy9yZWRoYXQtZXh0ZXJuYWwiLCJzdWIiOiJmOjUyOGQ3NmZmLWY3MDgtNDNlZC04Y2Q1LWZlMTZmNGZlMGNlNjpkYXBhciIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJyaHNtLWFwaSIsInNpZCI6ImQxYjFjMjFhLTAwYTEtNDI4Mi1hNjRiLTVhYzNjZDk1ZmQ0MCIsInNjb3BlIjoiYmFzaWMgcm9sZXMgd2ViLW9yaWdpbnMgY2xpZW50X3R5cGUucHJlX2tjMjUgb2ZmbGluZV9hY2Nlc3MifQ.hyGpiOkXuIzA7B4FZ9v1ltT9rK2pMsLy-t4m6qbtDjHyIZsbcSpPhNPl2WOqpso-5Vzab0GKqJ3lh6bbZ0FabA'
+
+# Red Hat account login (this is used to attach your subs to controller)
+rh_username: 'dapar'
+
+# Red Hat account password
+rh_password: 'SuspendCookbookMollifyInitial75'
+
+# The password for the root user on builder (using a non-root user would require
+# further changes)
+root_machine_pass: 'W:3s#9nW%'
+
+# This is the password of the 'token_user' account that the playbook will create
+# in the private Automation Hub.
+ah_token_password: 'ansible123!token'
+
+# This is the password of the 'api_user' user that the playbook will create
+# in the controller(s)
+controller_api_user_pass: 'ansible123!'
+
+# The admin password for the controller; if unspecified, the default
+# is Password1234!
+controller_pass: 'ansible123!'
+aap_pass: 'ansible123!'
+# The admin password for the private Automation Hub; if unspecified, the default
+# is Password1234!
+ah_pass: 'ansible123!'
+
+# The password to decrypt this vault
+vault_pass: 'ansible123!'
+...
