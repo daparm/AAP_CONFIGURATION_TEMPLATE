@@ -1,48 +1,49 @@
 ---
 - name: Deploy Ansible Automation Platform
-  hosts: "{{ env | default('dev') }}" # noqa: syntax-check
+  hosts: "{{ env | default('test') }}" # noqa: syntax-check
   connection: local
   vars_files:
     - "../vaults/{{ env }}.yml"
   tasks:
-    - name: Include aap_setup_download role
-      ansible.builtin.include_role:
-        name: infra.aap_utilities.aap_setup_download
+    # - name: Include aap_setup_download role
+    #   ansible.builtin.include_role:
+    #     name: infra.aap_utilities.aap_setup_download
 
     - name: Include aap_setup_prepare role
       ansible.builtin.include_role:
         name: infra.aap_utilities.aap_setup_prepare
+
+    - name: Fix Preflight regarding os distro if Fedora running
+      ansible.builtin.lineinfile:
+        path: "{{ aap_setup_prep_installer_dir }}/collections/ansible_collections/ansible/containerized_installer/roles/preflight/tasks/nodes.yml"
+        state: present
+        regexp: "      - ansible_distribution == 'RedHat'"
+        line: "      - ansible_distribution == 'Fedora'"
+    #   # when: ansible_facts['os_family'] == "Fedora"
+
+    - name: Fix Preflight regarding version check if Fedora running
+      ansible.builtin.lineinfile:
+        path: "{{ aap_setup_prep_installer_dir }}/collections/ansible_collections/ansible/containerized_installer/roles/preflight/tasks/nodes.yml"
+        state: absent
+        regexp: "ansible_distribution_version"
+      # when: ansible_facts['os_family'] == "Fedora"
+
+    - name: Ensure AAP_License File is in place
+      ansible.builtin.copy:
+        src: /home/smn/Projects/AAP/AAP_License.zip
+        dest: "{{ controller_license_file }}"
+      delegate_to: localhost
 
     - name: Include aap_setup_install role
       ansible.builtin.include_role:
         name: infra.aap_utilities.aap_setup_install
 
 - name: Configure ansible controller post installation
-  hosts: "{{ env | default('dev') }}" # noqa: syntax-check
+  hosts: "{{ env | default('test') }}" # noqa: syntax-check
   vars_files:
     - "../vaults/{{ env }}.yml"
   connection: local
   tasks:
-    - name: Get subscriptions with a filter
-      awx.awx.subscriptions:
-        username: "{{ rh_username }}"
-        password: "{{ rh_password }}"
-        filters:
-          product_name: Red Hat Ansible Automation Platform
-          support_level: Self-Support
-        controller_host: "{{ aap_hostname }}"
-        aap_username: "{{ aap_username }}"
-        aap_password: "{{ aap_password }}"
-        validate_certs: false
-      register: subscription
-
-    - name: Attach to a pool
-      awx.awx.license:
-        pool_id: "{{ subscription.subscriptions[0].pool_id }}"
-        controller_host: "{{ aap_hostname }}"
-        aap_username: "{{ aap_username }}"
-        aap_password: "{{ aap_password }}"
-        validate_certs: false
 
     - name: Figuring out AH token
       when: ah_token is not defined or ah_token['token'] is defined
@@ -65,12 +66,14 @@
       ansible.builtin.include_role:
         name: infra.aap_configuration.dispatch
 
-    - name: Launch build execution environment job template
-      awx.awx.job_launch:
-        name: build_execution_environments
-        controller_host:     "{{ aap_hostname }}"
-        aap_username: "{{ aap_username }}"
-        aap_password: "{{ aap_password }}"
-        validate_certs:      "{{ aap_validate_certs }}"
+
+
+    # - name: Launch build execution environment job template
+    #   awx.awx.job_launch:
+    #     name: build_execution_environments
+    #     controller_host:     "{{ aap_hostname }}"
+    #     aap_username: "{{ aap_username }}"
+    #     aap_password: "{{ aap_password }}"
+    #     validate_certs:      "{{ aap_validate_certs }}"
 
 ...

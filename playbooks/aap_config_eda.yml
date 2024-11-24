@@ -4,6 +4,11 @@
   vars_files:
     - ../vaults/{{ env }}.yml
   connection: local
+  vars:
+    aap_configuration_dispatcher_roles: "{{ eda_configuration_dispatcher_roles }}"
+    aap_hostname: "https://{{ aap_host | default(groups['automationcontroller'][0]) }}"
+    
+
   tasks:
 
     # probably not good but kinda works, looking for better solutions,
@@ -33,4 +38,7 @@
     - name: Call dispatch role
       ansible.builtin.include_role:
         name: infra.aap_configuration.dispatch
+
+- name: Run EDA Part
+  ansible.builtin.import_playbook: aap_config_eda.yml
 ...

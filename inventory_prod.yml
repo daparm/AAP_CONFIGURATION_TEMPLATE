@@ -14,7 +14,11 @@ all:
       hosts:
         HERE: # FQDN of Automation Hub host(s). Can be commented out if not in use.
 
-    automationedacontroller:
+    automationgateway:
+      hosts:
+        HERE: # FQDN of Automation Gateway Controller host(s)
+
+    automationeda:
       hosts:
         HERE: # FQDN of Automation EDA Controller host(s)
 

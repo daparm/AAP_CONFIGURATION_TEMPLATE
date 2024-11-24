@@ -2,6 +2,7 @@
 eda_projects:
   - name: eda
     description: config as code eda
+    organization: config_as_code
     url: https://github.com/djdanielsson/eda.git
     # credential: test_token
     wait: true
