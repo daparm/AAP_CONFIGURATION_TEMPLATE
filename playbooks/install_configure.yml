@@ -65,8 +65,9 @@
     - name: Call dispatch role
       ansible.builtin.include_role:
         name: infra.aap_configuration.dispatch
-
-
+        
+- name: Run EDA Part
+  ansible.builtin.import_playbook: aap_config_eda.yml
 
     # - name: Launch build execution environment job template
     #   awx.awx.job_launch:
